@@ -32,7 +32,7 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
   
   getFeatureInfoUrl: function (latlng) {
     // Construct a GetFeatureInfo request URL given a point
-    var point = this._map.latLngToLayerPoint(latlng, this._map.getZoom()),
+    var point = this._map.latLngToContainerPoint(latlng, this._map.getZoom()),
         size = this._map.getSize(),
         
         params = {
