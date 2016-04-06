@@ -1,6 +1,4 @@
-
-
-
+// Plugin start
 L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
   
   onAdd: function (map) {
@@ -25,15 +23,11 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
       url: url,
       success: function (data, status, xhr) {
         var err = typeof data === 'string' ? null : data;
-        
-        // geoserver json comes as string
+
+        // START own popup and data threatment    
         data = JSON.parse(data);
-        
-        //parse url to get the requested style
         var url_data = JSON.parse('{"' + this.url.replace(/&/g, '","').replace(/=/g,'":"') + '"}');
         var style = url_data.STYLES;
-        
-        // define your html popup
         var html = 
         '<div class="tiles-popup-arrow"> <i class="fa fa-caret-down fa-2x"></i></div>' +
         '<div class="tiles-popup">'+
@@ -42,8 +36,8 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
                 '<h2>' + filter_value(data[style],style) + '</h2>' +
             '</div>' +
         '</div>';
-        
-        showResults(err, evt.latlng, data);
+        // END own popup and data threatment
+        showResults(err, evt.latlng, html);
       },
       error: function (xhr, status, error) {
         showResults(error);  
@@ -82,7 +76,7 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
     if (err) { console.log(err); return; } // do nothing if there's an error
     
     // Otherwise show the content in a popup, or something.
-    L.popup({ maxWidth: 800})
+    L.popup({ maxWidth: 800,className:'tiles-popup-mega'})
       .setLatLng(latlng)
       .setContent(content)
       .openOn(this._map);
@@ -93,9 +87,8 @@ L.tileLayer.betterWms = function (url, options) {
   return new L.TileLayer.BetterWMS(url, options);  
 };
 
-
-// names to display instead of layer column name (translation)
-// future, use angularjs $compile inside function
+// names to display instead of layer column name
+// if need translate, need to use angularjs $compile inside function
 var names = {
   pob_total: 'Total population',
   kids_h: 'Male kids 0-9',
@@ -129,7 +122,6 @@ var names = {
   comer_act: 'Active commercial'
 };
 
-// wealth filter
 var wealth_range = function(wealth) {
   var rounded = 0;
   if(wealth>0){
