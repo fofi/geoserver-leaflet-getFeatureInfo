@@ -24,10 +24,14 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
       success: function (data, status, xhr) {
         var err = typeof data === 'string' ? null : data;
 
-        // START own popup and data threatment    
+        // geoserver json comes as string
         data = JSON.parse(data);
+
+        //parse url to get the requested style
         var url_data = JSON.parse('{"' + this.url.replace(/&/g, '","').replace(/=/g,'":"') + '"}');
         var style = url_data.STYLES;
+
+        // define your html popup
         var html = 
         '<div class="tiles-popup-arrow"> <i class="fa fa-caret-down fa-2x"></i></div>' +
         '<div class="tiles-popup">'+
@@ -36,7 +40,7 @@ L.TileLayer.BetterWMS = L.TileLayer.WMS.extend({
                 '<h2>' + filter_value(data[style],style) + '</h2>' +
             '</div>' +
         '</div>';
-        // END own popup and data threatment
+
         showResults(err, evt.latlng, html);
       },
       error: function (xhr, status, error) {
@@ -87,8 +91,8 @@ L.tileLayer.betterWms = function (url, options) {
   return new L.TileLayer.BetterWMS(url, options);  
 };
 
-// names to display instead of layer column name
-// if need translate, need to use angularjs $compile inside function
+// names to display instead of layer column name (translation)
+// future, use angularjs $compile inside function
 var names = {
   pob_total: 'Total population',
   kids_h: 'Male kids 0-9',
@@ -122,6 +126,7 @@ var names = {
   comer_act: 'Active commercial'
 };
 
+// wealth filter
 var wealth_range = function(wealth) {
   var rounded = 0;
   if(wealth>0){
