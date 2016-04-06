@@ -131,17 +131,12 @@ var names = {
 
 // wealth filter
 var wealth_range = function(wealth) {
-  var wealth_range = 0;
+  var rounded = 0;
   if(wealth>0){
-    var rounded = 0;
-    var wealth_length = Math.pow(10, parseInt(wealth).toString().length-2); // depending on the length, round to thousand,hundred,etc
-    rounded = Math.round(wealth/wealth_length)*wealth_length;
-    interval1 = rounded-2*wealth_length;
-    interval2 = rounded+2*wealth_length;
-
-    wealth_range =  interval1+' - '+interval2+' €';
+      var wealth_length = 100;
+      rounded = Math.round(wealth/wealth_length)*wealth_length;
   }
-  return wealth_range;
+  return rounded +'€';
 };
 
 // filter value in order to adapt it (eg: add %,..)
