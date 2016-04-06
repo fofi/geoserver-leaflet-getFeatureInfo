@@ -119,7 +119,7 @@ var names = {
   elder_rate: 'Elderly dependency rate',
   density_po: 'Population density',
   foreigner: 'Foreigners rate',
-  wealth: 'Wealth',
+  wealth: 'Average annual personal income',
   unemploy: 'Unemployment',
   num_comer: 'Number of commercial premises',
   met_comer: 'Commercial area per inhabitant',
